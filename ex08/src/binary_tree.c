@@ -10,7 +10,7 @@ node_t  *allocnode(){
   node->right = NULL;
   return node;
 }
-node_t  *insert(node_t *root, char *key, void *data){
+node_t *insert(node_t *root, char *key, void *data){
   if(root == NULL) {
     root = malloc(sizeof(node_t));
     root->key = key;
@@ -25,19 +25,19 @@ node_t  *insert(node_t *root, char *key, void *data){
         root->right = insert(root->right, key,data);
   return root;
 }
-void    print_node(node_t *node){
+void print_node(node_t *node){
   if (node == NULL)
      return;
-  printf("%s ->  %s ", node->data,(char*)node->key);
+  printf("%s:  %s ", node->data,(char*)node->key);
 }
-void    visit_tree(node_t *node, void (*fp)(node_t *root)){
+void visit_tree(node_t *node, void (*fp)(node_t *root)){
   if(node == NULL)
     return;
   fp(node);
   visit_tree(node->left,fp);
   visit_tree(node->right,fp);
 }
-void    destroy_tree(node_t *node, void (*fdestroy)(node_t *root)){
+void destroy_tree(node_t *node, void (*fdestroy)(node_t *root)){
   if(node == NULL)
     return;
   destroy_tree(node->left,fdestroy);
