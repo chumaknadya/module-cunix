@@ -44,7 +44,6 @@ char* my_itoa(int nmb) {
   }
 
   n = nmb;
-
   while (n > 9) {
     n /= 10;
     i *= 10;
@@ -61,28 +60,21 @@ char* my_itoa(int nmb) {
 
   return ptr;
 }
-
-
-int my_printf(const char* format, ...) {
-  extern long write(int, const char*, unsigned int);
-
-  va_list arg_list;
-  char *st, *padd_str, *str,*res_str, *padd_str_init;
-  int padd;
-  unsigned char padd_symb;
-
-  str = malloc(256 * sizeof(char));
-  padd_str_init = malloc(20 * sizeof(char));
-  res_str = str;
-  va_start(arg_list, format);
-
+char *copy_st(char *str, char*st){
+  while(*st != '\0') {
+    *str = *st;
+    str++;
+    st++;
+  }
+  return str;
+}
+char *get_str(const char* format, char *st,char *padd_str, char *str, char *res_str,
+              char *padd_str_init,int padd,unsigned char padd_symb,va_list arg_list) {
   while(*format != '\0') {
-
     if(check_format(format,'%')) {
       padd = 0;
       padd_symb = 0;
       padd_str = padd_str_init;
-
       format++;
       while(!check_format(format,' ') && !check_format(format,'\0')) {
         if(check_format(format,'%')) {
@@ -104,17 +96,11 @@ int my_printf(const char* format, ...) {
         padd = my_atoi(padd_str_init);
         if(check_format(format,'s'))
           st = va_arg(arg_list, char *);
-        if(check_format(format,'d')) {
-          int i = va_arg(arg_list, int);
-          st = my_itoa(i);
-        }
+        if(check_format(format,'d'))
+          st = my_itoa(va_arg(arg_list, int));
         padd -= my_strlen(st);
         while(padd-- > 0) *str++ = (padd_symb)? padd_symb:' ';
-        while(*st != '\0') {
-          *str = *st;
-          str++;
-          st++;
-        }
+        str = copy_st(str,st);
         format++;
         break;
       }
@@ -125,7 +111,20 @@ int my_printf(const char* format, ...) {
     format++;
   }
   *str = '\0';
+  return str;
+}
 
+int my_printf(const char* format, ...) {
+  extern long write(int, const char*, unsigned int);
+  va_list arg_list;
+  char *st, *padd_str, *str,*res_str, *padd_str_init;
+  int padd;
+  unsigned char padd_symb;
+  str = malloc(256 * sizeof(char));
+  padd_str_init = malloc(20 * sizeof(char));
+  res_str = str;
+  va_start(arg_list, format);
+  str = get_str(format,st,padd_str,str,res_str,padd_str_init,padd,padd_symb,arg_list);
   write(1,res_str, strlen(res_str));
   va_end(arg_list);
   free(padd_str_init);
