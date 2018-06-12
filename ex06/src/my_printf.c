@@ -3,16 +3,44 @@
 #include <string.h>
 #include <stdio.h>
 
+int my_atoi(const char *nptr) {
+    int acum = 0;
+    int factor = 1;
+
+    if(*nptr == '-') {
+        factor = -1;
+        nptr++;
+    }
+
+    while((*nptr >= '0')&&(*nptr <= '9')) {
+      acum = acum * 10;
+      acum = acum + (*nptr - 48);
+      nptr++;
+    }
+    return (factor * acum);
+}
+int is_digit (const char *c) {
+    return  (*c >= '0') && (*c <= '9');
+}
+int check_format(const char *c,char symb) {
+  return *c == symb;
+}
+unsigned int my_strlen(char *str) {
+  int i = 0;
+  for(i = 0;*(str + i) != '\0'; i++);
+  return i;
+}
+
 char* my_itoa(int nmb) {
-  char *ptr, *buf;
-  buf = malloc(16 * sizeof(char));
-  ptr = buf;
-  int i = 1, n;
+  char *buffer = malloc(16 * sizeof(char));
+  char *ptr = buffer;
+  int i = 1;
+  int n;
 
   if (nmb < 0) {
     nmb = -1 * nmb;
-    *buf = '-';
-    buf++;
+    *buffer = '-';
+    buffer++;
   }
 
   n = nmb;
@@ -24,64 +52,64 @@ char* my_itoa(int nmb) {
 
   while (i > 0) {
     n = nmb / i;
-    *buf = '0' + n;
-    buf++;
+    *buffer = '0' + n;
+    buffer++;
     nmb -= i * n;
     i /= 10;
   }
-  *buf = '\0';
+  *buffer = '\0';
 
   return ptr;
 }
+
 
 int my_printf(const char* format, ...) {
   extern long write(int, const char*, unsigned int);
 
   va_list arg_list;
-  unsigned char symb;
-  char *st, *padd_str, *str, *padd_str_init, *str_start_ptr;
-  int padding;
+  char *st, *padd_str, *str,*res_str, *padd_str_init;
+  int padd;
+  unsigned char padd_symb;
 
   str = malloc(256 * sizeof(char));
-  str_start_ptr = str;
-  padd_str_init = malloc(16 * sizeof(char));
+  padd_str_init = malloc(20 * sizeof(char));
+  res_str = str;
   va_start(arg_list, format);
 
   while(*format != '\0') {
 
-    if(*format == '%') {
-      padding = 0;
-      symb = 0;
+    if(check_format(format,'%')) {
+      padd = 0;
+      padd_symb = 0;
       padd_str = padd_str_init;
 
       format++;
-      while(*format != ' ' && *format != '\0') {
-        if(*format == '%') {
+      while(!check_format(format,' ') && !check_format(format,'\0')) {
+        if(check_format(format,'%')) {
           *str = '%';
           str++;
           format++;
           break;
         }
-        if(*format == '0') {
-          symb = '0';
+        if(check_format(format,'0')) {
+          padd_symb = '0';
           format++;
         }
-        while(*format >= '0' && *format <= '9') {
+        while(is_digit(format)) {
           *padd_str = *format;
           padd_str++;
           format++;
         }
         *padd_str = '\0';
-        padding = atoi(padd_str_init);
-        if(*format == 's') {
+        padd = my_atoi(padd_str_init);
+        if(check_format(format,'s'))
           st = va_arg(arg_list, char *);
-        }
-        if(*format == 'd') {
+        if(check_format(format,'d')) {
           int i = va_arg(arg_list, int);
           st = my_itoa(i);
         }
-        padding -= strlen(st);
-        while(padding-- > 0) *str++ = (symb)?symb:' ';
+        padd -= my_strlen(st);
+        while(padd-- > 0) *str++ = (padd_symb)? padd_symb:' ';
         while(*st != '\0') {
           *str = *st;
           str++;
@@ -98,9 +126,9 @@ int my_printf(const char* format, ...) {
   }
   *str = '\0';
 
-  write(1, str_start_ptr, strlen(str_start_ptr));
+  write(1,res_str, strlen(res_str));
   va_end(arg_list);
   free(padd_str_init);
-  free(str_start_ptr);
+  free(res_str);
   return 0;
 }
