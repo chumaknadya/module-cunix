@@ -56,13 +56,13 @@ int my_printf(const char* format, ...) {
 
       format++;
       while(*format != ' ' && *format != '\0') {
-        if(*format == '%'){
+        if(*format == '%') {
           *str = '%';
           str++;
           format++;
           break;
         }
-        if(*format == '0'){
+        if(*format == '0') {
           symb = '0';
           format++;
         }
@@ -73,10 +73,10 @@ int my_printf(const char* format, ...) {
         }
         *padd_str = '\0';
         padding = atoi(padd_str_init);
-        if(*format == 's'){
+        if(*format == 's') {
           st = va_arg(arg_list, char *);
         }
-        if(*format == 'd'){
+        if(*format == 'd') {
           int i = va_arg(arg_list, int);
           st = my_itoa(i);
         }
