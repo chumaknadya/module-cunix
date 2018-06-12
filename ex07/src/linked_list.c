@@ -76,27 +76,27 @@ void    *list_shift(node_t **head){
 }
 
 void    *list_remove(node_t **head, int pos){
-    void *res;
-    node_t *ptr = *head, *pptr;
-    if (pos == 0) {
+  void *res;
+  node_t *ptr = *head, *pptr;
+  if (pos == 0) {
       res = ptr->data;
       (*head) = (*head)->next;
       free(ptr->data);
       free(ptr);
       return res;
-    }
-    pptr = ptr;
-    ptr = ptr->next;
-    while(pos > 1) {
+  }
+  pptr = ptr;
+  ptr = ptr->next;
+  while(pos > 1) {
       ptr = ptr->next;
       pptr = pptr->next;
       pos--;
    }
-   pptr->next = ptr->next;
-   res = ptr->data;
-   free(ptr->data);
-   free(ptr);
-   return res;
+  pptr->next = ptr->next;
+  res = ptr->data;
+  free(ptr->data);
+  free(ptr);
+  return res;
 }
 
 void    list_print(node_t *head){
