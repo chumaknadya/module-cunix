@@ -3,49 +3,33 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-int int_len(int n) {
-        char buffer[8192];
-        return snprintf(buffer, sizeof buffer, "%i", n);
-}
-
 char* my_itoa(int nmb) {
-        char * s;
-        size_t l, len;
-        bool fix_int_min = false;
-        if (!nmb) {
-                return "0";
-        }
+  char *buffer = malloc(16 * sizeof(char));
+  char *ptr = buffer;
+  int i = 1;
+  int n;
 
-        if (-INT_MAX != INT_MIN && nmb == INT_MIN) {
-                ++nmb;
-                fix_int_min = true;
-        }
+  if (nmb < 0) {
+    nmb = -1 * nmb;
+    *buffer = '-';
+    buffer++;
+  }
 
-        len = int_len(nmb);
-        if (!(s = malloc(len + 1))) {
-                return NULL;
-        }
-        if (nmb < 0) {
-                s[0] = '-';
-                nmb = -nmb;
-        }
-        s[l = len] = '\0';
-        while (nmb) {
-                s[--len] = (nmb % 10) + '0';
-                nmb /= 10;
-        }
+  n = nmb;
 
-        if (fix_int_min) {
-                --l;
-                while (s[l] == '9') {
-                        s[l++] = 0;
-                }
-                if (s[l] == '-') {
-                        // realloc +1 and write "-1[0....0]\0"
-                } else {
-                        ++s[l];
-                }
-        }
+  while (n > 9) {
+    n /= 10;
+    i *= 10;
+  }
 
-        return s;
+  while (i > 0) {
+    n = nmb / i;
+    *buffer = '0' + n;
+    buffer++;
+    nmb -= i * n;
+    i /= 10;
+  }
+  *buffer = '\0';
+
+  return ptr;
 }
