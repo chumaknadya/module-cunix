@@ -5,8 +5,8 @@ int my_putchar(char c) {
 }
 int my_puts(const char *s) {
     while(*s) {
-      if(my_putchar(*s++) == EOF) return EOF;
+      my_putchar(*s++);
     }
-    if(my_putchar('\n') == EOF) return EOF;
+    my_putchar('\n');
     return 0;
 }
