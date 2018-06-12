@@ -57,7 +57,6 @@ char* my_itoa(int nmb) {
     i /= 10;
   }
   *buffer = '\0';
-
   return ptr;
 }
 char *copy_st(char *str, char*st){
