@@ -19,20 +19,23 @@ int my_atoi(const char *nptr) {
     }
     return (factor * acum);
 }
+
 int is_digit (const char *c) {
     return  (*c >= '0') && (*c <= '9');
 }
+
 int check_format(const char *c,char symb) {
   return *c == symb;
 }
+
 unsigned int my_strlen(char *str) {
   int i = 0;
   for(i = 0;*(str + i) != '\0'; i++);
   return i;
 }
 
-char* my_itoa(int nmb) {
-  char *buffer = malloc(16 * sizeof(char));
+char *my_itoa(int nmb) {
+  char *buffer = malloc(10 * sizeof(char));
   char *ptr = buffer;
   int i = 1;
   int n;
@@ -59,7 +62,8 @@ char* my_itoa(int nmb) {
   *buffer = '\0';
   return ptr;
 }
-char *copy_st(char *str, char*st){
+
+char *copy_st(char *str, char *st){
   while(*st != '\0') {
     *str = *st;
     str++;
@@ -67,7 +71,8 @@ char *copy_st(char *str, char*st){
   }
   return str;
 }
-char *get_str(const char* format, char *st,char *padd_str, char *str, char *res_str,
+
+char *get_str(const char *format,char *st,char *padd_str, char *str, char *res_str,
               char *padd_str_init,int padd,unsigned char padd_symb,va_list arg_list) {
   while(*format != '\0') {
     if(check_format(format,'%')) {

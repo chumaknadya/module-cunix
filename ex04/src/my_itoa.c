@@ -1,10 +1,8 @@
-#include <stdbool.h>
-#include <limits.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-char* my_itoa(int nmb) {
-  char *buffer = malloc(16 * sizeof(char));
+
+char *my_itoa(int nmb) {
+  char *buffer = malloc(10 * sizeof(char));
   char *ptr = buffer;
   int i = 1;
   int n;

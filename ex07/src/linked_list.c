@@ -2,7 +2,8 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-node_t  *list_create(void *data){
+
+node_t  *list_create(void *data) {
    node_t * head = NULL;
    head = malloc(sizeof(node_t));
    head->data = data;
@@ -10,7 +11,7 @@ node_t  *list_create(void *data){
    return head;
 }
 
-void    list_destroy(node_t **head, void (*fp)(void *data)){
+void list_destroy(node_t **head, void (*fp)(void *data)) {
     if (head == NULL) {
       return;
     }
@@ -26,7 +27,7 @@ void    list_destroy(node_t **head, void (*fp)(void *data)){
     *head = NULL;
 }
 
-void    list_push(node_t *head, void *data){
+void list_push(node_t *head, void *data) {
   if (head == NULL)
     return;
   while(head->next) head = head->next;
@@ -35,37 +36,38 @@ void    list_push(node_t *head, void *data){
   head->next = NULL;
   head->data = data;
 }
-void    list_unshift(node_t **head, void *data){
+
+void list_unshift(node_t **head, void *data) {
      node_t   *new_node = malloc(sizeof(node_t));
      new_node->data = data;
      new_node->next = *head;
      *head = new_node;
 }
 
-void    *list_pop(node_t **head){
+void *list_pop(node_t **head){
     node_t *ptr, *pptr = *head;
-    void *rv;
+    void *res;
     if(pptr->next) {
       ptr = pptr->next;
-    }
-    else {
-      rv = (*head)->data;
+    } else {
+      res = (*head)->data;
       free((*head)->data);
       free(*head);
-    *head = NULL;
-      return rv;
+      *head = NULL;
+      return res;
     }
     while (ptr->next) {
       ptr = ptr->next;
       pptr = pptr->next;
     }
-    rv = ptr->data;
+    res = ptr->data;
     free(ptr->data);
     free(ptr);
     pptr->next = NULL;
-    return rv;
+    return res;
 }
-void    *list_shift(node_t **head){
+
+void *list_shift(node_t **head) {
    void *res;
    node_t *temp = *head;
    *head = (*head)->next;
@@ -75,7 +77,7 @@ void    *list_shift(node_t **head){
    return res;
 }
 
-void    *list_remove(node_t **head, int pos){
+void *list_remove(node_t **head, int pos) {
   void *res;
   node_t *ptr = *head, *pptr;
   if (pos == 0) {
@@ -99,14 +101,15 @@ void    *list_remove(node_t **head, int pos){
   return res;
 }
 
-void    list_print(node_t *head){
+void list_print(node_t *head) {
     node_t * current = head;
     while (current != NULL) {
         printf("%s\n", current->data);
         current = current->next;
     }
 }
-void    list_visitor(node_t *head, void (*fp)(void *data)){
+
+void list_visitor(node_t *head, void (*fp)(void *data)) {
     while (head != NULL) {
         (*fp)(head->data);
         head = head->next;

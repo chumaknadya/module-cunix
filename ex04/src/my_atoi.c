@@ -1,4 +1,3 @@
-#include <stddef.h>
 int my_atoi(const char *nptr) {
     int acum = 0;
     int factor = 1;
