@@ -57,9 +57,8 @@ void hash_set(hashtable_t *ht, char *key, void *ptr) {
 
 const void *hash_get(hashtable_t *ht, char *key) {
   int index = hash_func(key) % ht->size;
-
-  if(ht->table[index] == NULL) return NULL;
-
+  if(ht->table[index] == NULL)
+    return NULL;
   return find_by_key(ht->table[index], key);
 }
 

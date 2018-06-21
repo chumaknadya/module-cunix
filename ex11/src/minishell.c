@@ -18,13 +18,13 @@ int ls_command(char *input) {
     write(1,"\n",1);
 	  pid = fork();
     if (pid == 0) {
-      if (strcmp(input,"") == 0) {
+        if (strcmp(input,"") == 0) {
              execl("/usr/bin/ls","ls");
-      }
-      execl("/usr/bin/ls","ls",input);
+        }
+        execl("/usr/bin/ls","ls",input);
     } else if (pid < 0) {
-		      fprintf(stderr, "Fork failed");
-		      return 1;
+		    fprintf(stderr, "Fork failed");
+		    return 1;
 	  } else {
         wait(NULL);
     }
@@ -103,7 +103,7 @@ int process_vars(hashtable_t *ht, char **input) {
   return 0;
 }
 
-int	 get_input(hashtable_t *ht) {
+int	get_input(hashtable_t *ht) {
 	int		ret;
 	char	buf;
 	int		i;
@@ -127,11 +127,11 @@ int	 get_input(hashtable_t *ht) {
   return exec_command(ht,ptr);
 }
 
-void	display_msg(void) {
+void display_msg(void) {
   write(1,"$_>", 3);
 }
 
-void	signal_handler(int signo) {
+void signal_handler(int signo) {
 	if (signo == SIGINT) {
 		puts("");
   	display_msg();

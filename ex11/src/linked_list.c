@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-node_t  *list_create(void *data,void *key) {
+node_t *list_create(void *data,void *key) {
   node_t *head = malloc(sizeof(node_t));
   head->key = key;
   head->data = data;
@@ -13,7 +13,7 @@ node_t  *list_create(void *data,void *key) {
   return head;
 }
 
-void    list_destroy(node_t **head) {
+void list_destroy(node_t **head) {
   if(*head == NULL) return;
   node_t *ptr = *head, *pptr;
 
@@ -27,7 +27,7 @@ void    list_destroy(node_t **head) {
   (*head) = NULL;
 }
 
-void    list_push(node_t *head, void *data, void *key) {
+void list_push(node_t *head, void *data, void *key) {
   if (head == NULL) return;
   while (head->next) {
     if (strcmp(key, (char*)head->key) == 0) {
@@ -50,7 +50,7 @@ void    list_push(node_t *head, void *data, void *key) {
   head->key  = key;
 }
 
-void    list_unshift(node_t **head, void *data, void *key) {
+void list_unshift(node_t **head, void *data, void *key) {
   node_t *ptr = *head;
 
   *head = malloc(sizeof(node_t));
@@ -60,7 +60,7 @@ void    list_unshift(node_t **head, void *data, void *key) {
   (*head)->key  = key;
 }
 
-void    *list_pop(node_t **head) {
+void *list_pop(node_t **head) {
   node_t *ptr, *pptr = *head;
   void *rv;
 
@@ -85,7 +85,7 @@ void    *list_pop(node_t **head) {
   return rv;
 }
 
-void    *list_shift(node_t **head) {
+void *list_shift(node_t **head) {
   if (*head == NULL) return NULL;
   void *rv;
   node_t *ptr = *head;
@@ -99,7 +99,7 @@ void    *list_shift(node_t **head) {
   return rv;
 }
 
-void    *list_remove(node_t **head, int pos) {
+void *list_remove(node_t **head, int pos) {
   void *rv;
   node_t *ptr = *head, *pptr;
   if (pos == 0) {
@@ -127,7 +127,7 @@ void    *list_remove(node_t **head, int pos) {
   return rv;
 }
 
-void    list_print(node_t *head) {
+void list_print(node_t *head) {
   while(head) {
     write(1, "\n", 1);
     write(1, head->key, strlen(head->key));
@@ -143,6 +143,5 @@ const void *find_by_key(node_t *head,char *key) {
        return head->data;
      head = head->next;
    }
-
    return NULL;
 }

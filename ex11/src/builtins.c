@@ -40,13 +40,11 @@ int export(hashtable_t* env, const char *args) {
 
 int env(hashtable_t* env, const char *args) {
   hash_print(env);
-
   return 0;
 }
 
 int echo(hashtable_t* env, const char *args) {
   write(1, args, strlen(args));
-
   return 0;
 }
 
