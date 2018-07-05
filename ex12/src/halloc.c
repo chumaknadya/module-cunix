@@ -17,7 +17,7 @@ union header {
 static union header list;
 static union header *first = NULL;
 
-void free(void *ptr) {
+void my_free(void *ptr) {
   if (ptr == NULL) return;
 
   union header *iter, *block;
@@ -65,7 +65,7 @@ union header *split_fragment(union header *p, union header *prev, unsigned true_
 void create_fragment(unsigned true_size, char *page) {
   union header *block = (union header *)page;
   block->meta.len = true_size;
-  free((void *)(block + 1));
+  my_free((void *)(block + 1));
 }
 
 void *halloc(size_t size) {
